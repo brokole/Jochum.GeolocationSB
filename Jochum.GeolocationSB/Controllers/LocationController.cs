@@ -12,24 +12,24 @@ namespace Jochum.GeoLocationsB.Controllers
     [Route("api/[controller]")]
     public class LocationController : Controller
     {
-        private readonly SqliteContext _context;
-        private readonly HttpContext _currentContext;
+        private readonly SqliteContext Context;
+        private readonly HttpContext? CurrentContext;
 
         public LocationController(SqliteContext context, IHttpContextAccessor httpContextAccessor)
         {
-            _context = context;
-            _currentContext = httpContextAccessor.HttpContext;
+            Context = context;
+            CurrentContext = httpContextAccessor.HttpContext;
 
 
             // test with out db to make sure values aren't null
             // also it breaks everything if you enable it because the code will try to edit Id 1 2 and 3 to the current values and then change the values to the values bellow
 
-            /*if (_context.Locations.Count() == 0)
+            /*if (Context.Locations.Count() == 0)
             {
-                _context.Locations.Add(new Locations { Id = 1, Straat = "1", HuisNummer = "2", PostCode = "3", Plaats = "4", Land = "5" });
-                _context.Locations.Add(new Locations { Id = 2, Straat = "1", HuisNummer = "2", PostCode = "3", Plaats = "4", Land = "5" });
-                _context.Locations.Add(new Locations { Id = 3, Straat = "1", HuisNummer = "2", PostCode = "3", Plaats = "4", Land = "5" });
-                _context.SaveChanges();
+                Context.Locations.Add(new Locations { Id = 1, Straat = "1", HuisNummer = "2", PostCode = "3", Plaats = "4", Land = "5" });
+                Context.Locations.Add(new Locations { Id = 2, Straat = "1", HuisNummer = "2", PostCode = "3", Plaats = "4", Land = "5" });
+                Context.Locations.Add(new Locations { Id = 3, Straat = "1", HuisNummer = "2", PostCode = "3", Plaats = "4", Land = "5" });
+                Context.SaveChanges();
             }  */
         }
 
@@ -37,16 +37,17 @@ namespace Jochum.GeoLocationsB.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var Locations = await _context.Locations.ToListAsync();
+            var Locations = await Context.Locations.ToListAsync();
             Locations.Reverse();
-            return Ok(Locations);
+            Console.WriteLine("applesauce");
+            return Ok(Locations);  
         }
 
         // GET api/Locations/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var Location = await _context.Locations.FirstOrDefaultAsync(p => p.Id == id);
+            var Location = await Context.Locations.FirstOrDefaultAsync(p => p.Id == id);
             if (Location == null)
             {
                 return NotFound();
@@ -62,8 +63,8 @@ namespace Jochum.GeoLocationsB.Controllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest);
             }
-            await _context.Locations.AddAsync(Location);
-            _context.SaveChanges();
+            await Context.Locations.AddAsync(Location);
+            Context.SaveChanges();
 
             return Ok();
         }
@@ -77,13 +78,13 @@ namespace Jochum.GeoLocationsB.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest);
             }
 
-            var oldLocation = _context.Locations.SingleOrDefault(p => p.Id == Location.Id);
+            var oldLocation = Context.Locations.SingleOrDefault(p => p.Id == Location.Id);
             if (oldLocation == null)
             {
                 return NotFound();
             }
-            _context.Entry(oldLocation).CurrentValues.SetValues(Location);
-            await _context.SaveChangesAsync();
+            Context.Entry(oldLocation).CurrentValues.SetValues(Location);
+            await Context.SaveChangesAsync();
 
             return Ok();
         }
@@ -92,14 +93,14 @@ namespace Jochum.GeoLocationsB.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var Location = _context.Locations.SingleOrDefault(p => p.Id == id);
+            var Location = Context.Locations.SingleOrDefault(p => p.Id == id);
             if (Location == null)
             {
                 return NotFound();
             }
 
-            _context.Locations.Remove(Location);
-            await _context.SaveChangesAsync();
+            Context.Locations.Remove(Location);
+            await Context.SaveChangesAsync();
 
             return Ok();
         }
