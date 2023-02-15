@@ -1,4 +1,4 @@
-﻿using Jochum.GeolocationSB.Data;
+﻿/* using Jochum.GeolocationSB.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Jochum.GeolocationSB
@@ -36,3 +36,4 @@ namespace Jochum.GeolocationSB
         }
     }
 }
+*/

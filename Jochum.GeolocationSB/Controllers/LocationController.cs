@@ -13,7 +13,7 @@ namespace Jochum.GeoLocationsB.Controllers
     public class LocationController : Controller
     {
         private readonly SqliteContext Context;
-        private readonly HttpContext? CurrentContext;
+        private readonly HttpContext CurrentContext;
 
         public LocationController(SqliteContext context, IHttpContextAccessor httpContextAccessor)
         {
@@ -39,7 +39,6 @@ namespace Jochum.GeoLocationsB.Controllers
         {
             var Locations = await Context.Locations.ToListAsync();
             Locations.Reverse();
-            Console.WriteLine("applesauce");
             return Ok(Locations);  
         }
 
@@ -59,7 +58,7 @@ namespace Jochum.GeoLocationsB.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Locations Location)
         {
-            if (Location == null || Location.Id != 0 || String.IsNullOrEmpty(Location.Straat))
+            if (Location == null || Location.Id != 0 || String.IsNullOrEmpty(Location.Straat) || String.IsNullOrEmpty(Location.HuisNummer) || String.IsNullOrEmpty(Location.Plaats) || String.IsNullOrEmpty(Location.Land) || String.IsNullOrEmpty(Location.PostCode))
             {
                 return StatusCode(StatusCodes.Status400BadRequest);
             }
@@ -101,7 +100,6 @@ namespace Jochum.GeoLocationsB.Controllers
 
             Context.Locations.Remove(Location);
             await Context.SaveChangesAsync();
-
             return Ok();
         }
     }
