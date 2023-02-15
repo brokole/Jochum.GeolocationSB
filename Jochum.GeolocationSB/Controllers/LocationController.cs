@@ -20,13 +20,17 @@ namespace Jochum.GeoLocationsB.Controllers
             _context = context;
             _currentContext = httpContextAccessor.HttpContext;
 
-            if (_context.Locations.Count() == 0)
+
+            // test with out db to make sure values aren't null
+            // also it breaks everything if you enable it because the code will try to edit Id 1 2 and 3 to the current values and then change the values to the values bellow
+
+            /*if (_context.Locations.Count() == 0)
             {
-                _context.Locations.Add(new Locations { Id = 1, Straat = "", HuisNummer = "", PostCode = "", Plaats = "", Land = "" });
-                _context.Locations.Add(new Locations { Id = 2, Straat = "", HuisNummer = "", PostCode = "", Plaats = "", Land = "" });
-                _context.Locations.Add(new Locations { Id = 3, Straat = "", HuisNummer = "", PostCode = "", Plaats = "", Land = "" });
+                _context.Locations.Add(new Locations { Id = 1, Straat = "1", HuisNummer = "2", PostCode = "3", Plaats = "4", Land = "5" });
+                _context.Locations.Add(new Locations { Id = 2, Straat = "1", HuisNummer = "2", PostCode = "3", Plaats = "4", Land = "5" });
+                _context.Locations.Add(new Locations { Id = 3, Straat = "1", HuisNummer = "2", PostCode = "3", Plaats = "4", Land = "5" });
                 _context.SaveChanges();
-            }
+            }  */
         }
 
         // GET: api/Locations
