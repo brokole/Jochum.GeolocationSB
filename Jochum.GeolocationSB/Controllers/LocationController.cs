@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jochum.GeoProductsB.Controllers
+namespace Jochum.GeoLocationsB.Controllers
 {
     [Route("api/[controller]")]
     public class LocationController : Controller
@@ -20,81 +20,81 @@ namespace Jochum.GeoProductsB.Controllers
             _context = context;
             _currentContext = httpContextAccessor.HttpContext;
 
-            if (_context.Products.Count() == 0)
+            if (_context.Locations.Count() == 0)
             {
-                _context.Products.Add(new Locations { Id = 1, Straat = "", HuisNummer = "", PostCode = "", Plaats = "", Land = "" });
-                _context.Products.Add(new Locations { Id = 2, Straat = "", HuisNummer = "", PostCode = "", Plaats = "", Land = "" });
-                _context.Products.Add(new Locations { Id = 3, Straat = "", HuisNummer = "", PostCode = "", Plaats = "", Land = "" });
+                _context.Locations.Add(new Locations { Id = 1, Straat = "", HuisNummer = "", PostCode = "", Plaats = "", Land = "" });
+                _context.Locations.Add(new Locations { Id = 2, Straat = "", HuisNummer = "", PostCode = "", Plaats = "", Land = "" });
+                _context.Locations.Add(new Locations { Id = 3, Straat = "", HuisNummer = "", PostCode = "", Plaats = "", Land = "" });
                 _context.SaveChanges();
             }
         }
 
-        // GET: api/Products
+        // GET: api/Locations
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var Products = await _context.Products.ToListAsync();
-            Products.Reverse();
-            return Ok(Products);
+            var Locations = await _context.Locations.ToListAsync();
+            Locations.Reverse();
+            return Ok(Locations);
         }
 
-        // GET api/Products/5
+        // GET api/Locations/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
-            if (product == null)
+            var Location = await _context.Locations.FirstOrDefaultAsync(p => p.Id == id);
+            if (Location == null)
             {
                 return NotFound();
             }
-            return Ok(product);
+            return Ok(Location);
         }
 
-        // POST api/Products
+        // POST api/Locations
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Locations product)
+        public async Task<IActionResult> Post([FromBody] Locations Location)
         {
-            if (product == null || product.Id != 0 || String.IsNullOrEmpty(product.Straat))
+            if (Location == null || Location.Id != 0 || String.IsNullOrEmpty(Location.Straat))
             {
                 return StatusCode(StatusCodes.Status400BadRequest);
             }
-            await _context.Products.AddAsync(product);
+            await _context.Locations.AddAsync(Location);
             _context.SaveChanges();
 
             return Ok();
         }
 
-        // PUT api/Products/5
+        // PUT api/Locations/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put([FromBody] Locations product)
+        public async Task<IActionResult> Put([FromBody] Locations Location)
         {
-            if (product == null || product.Id == 0 || String.IsNullOrEmpty(product.Straat))
+            if (Location == null || Location.Id == 0 || String.IsNullOrEmpty(Location.Straat))
             {
                 return StatusCode(StatusCodes.Status400BadRequest);
             }
 
-            var oldProduct = _context.Products.SingleOrDefault(p => p.Id == product.Id);
-            if (oldProduct == null)
+            var oldLocation = _context.Locations.SingleOrDefault(p => p.Id == Location.Id);
+            if (oldLocation == null)
             {
                 return NotFound();
             }
-            _context.Entry(oldProduct).CurrentValues.SetValues(product);
+            _context.Entry(oldLocation).CurrentValues.SetValues(Location);
             await _context.SaveChangesAsync();
 
             return Ok();
         }
 
-        // DELETE api/Products/5
+        // DELETE api/Locations/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var product = _context.Products.SingleOrDefault(p => p.Id == id);
-            if (product == null)
+            var Location = _context.Locations.SingleOrDefault(p => p.Id == id);
+            if (Location == null)
             {
                 return NotFound();
             }
 
-            _context.Products.Remove(product);
+            _context.Locations.Remove(Location);
             await _context.SaveChangesAsync();
 
             return Ok();

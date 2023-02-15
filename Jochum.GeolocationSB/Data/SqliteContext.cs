@@ -8,7 +8,7 @@ namespace Jochum.GeolocationSB.Data
 {
     public class SqliteContext : DbContext
     {
-        public DbSet<Locations> Products { get; set; }
+        public DbSet<Locations> Locations { get; set; }
 
         public SqliteContext(DbContextOptions<SqliteContext> options)
             : base(options)
