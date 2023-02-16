@@ -91,36 +91,28 @@ namespace Jochum.GeoLocationsB.Controllers
             await Context.SaveChangesAsync();
             return Ok();
         }
-  /*      public List<Locations> GetLocation(QueryObject query)
+       [HttpGet("GetAll ascending order")]
+        public async Task<ActionResult<Locations>> GetAll()
         {
-            var _locations = Context.Locations.AsQueryable();
+            var Locations = Context.Locations.OrderBy(c => c.Id).ToList();
 
-            if (!string.IsNullOrEmpty(query.Straat))
-            {
-                _locations = _locations.Where(e => e.Straat.Contains(query.Straat));
-            }
-
-            var ColumnsMap = new Dictionary<string, Expression<Func<Straat, object>>>
-            {
-                ["Locations"] = c => c.Straat,
-                ["abbr"] = c => c.
-                       };
-            Locations = locations.ApplyOrdering(query, ColumnsMap);
-
-            //Do paging as you have done earlier
-
-            return employees.ToList();
+            return Ok(Locations);
         }
-  
-        //This function orders based on the key and Expression Function You pass
-
-        public static IQueryable<T> ApplyOrdering<T>(this IQueryable<T> query, QueryObject queryObj, Dictionary<string, Expression<Func<T, object>>> columnsMap)
+        // GET: api/Locations/descending
+        [HttpGet("GetAll descending order")]
+        public async Task<ActionResult<Locations>> Getall()
         {
-            if (string.IsNullOrWhiteSpace(queryObj.SortBy) || !columnsMap.ContainsKey(queryObj.SortBy))
-                return query;
-
-            return queryObj.IsSortAscending ? query.OrderBy(columnsMap[queryObj.SortBy]) : query.OrderByDescending(columnsMap[queryObj.SortBy]);
+            var Locations = Context.Locations.OrderBy(c => c.Id).ToList();
+            Locations.Reverse();
+            return Ok(Locations);
         }
-  */
+        //Search: function
+        [HttpPut("search")]
+        public async Task<ActionResult<Locations>> Search()
+        {
+            var Locations = Context.Locations.OrderBy(c => c.Id).ToList();
+
+            return Ok(Locations);
+        }
     }
 }
