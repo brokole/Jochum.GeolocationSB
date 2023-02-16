@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Jochum.GeolocationSB.Data;
 using Jochum.GeolocationSB.Models;
@@ -20,19 +21,7 @@ namespace Jochum.GeoLocationsB.Controllers
             Context = context;
             CurrentContext = httpContextAccessor.HttpContext;
 
-
-            // test with out db to make sure values aren't null
-            // also it breaks everything if you enable it because the code will try to edit Id 1 2 and 3 to the current values and then change the values to the values bellow
-
-            /*if (Context.Locations.Count() == 0)
-            {
-                Context.Locations.Add(new Locations { Id = 1, Straat = "1", HuisNummer = "2", PostCode = "3", Plaats = "4", Land = "5" });
-                Context.Locations.Add(new Locations { Id = 2, Straat = "1", HuisNummer = "2", PostCode = "3", Plaats = "4", Land = "5" });
-                Context.Locations.Add(new Locations { Id = 3, Straat = "1", HuisNummer = "2", PostCode = "3", Plaats = "4", Land = "5" });
-                Context.SaveChanges();
-            }  */
         }
-
         // GET: api/Locations
         [HttpGet]
         public async Task<IActionResult> Get()
@@ -70,7 +59,7 @@ namespace Jochum.GeoLocationsB.Controllers
 
         // PUT api/Locations/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put([FromBody] Locations Location)
+         public async Task<IActionResult> Put([FromBody] Locations Location)
         {
             if (Location == null || Location.Id == 0 || String.IsNullOrEmpty(Location.Straat))
             {
@@ -102,5 +91,36 @@ namespace Jochum.GeoLocationsB.Controllers
             await Context.SaveChangesAsync();
             return Ok();
         }
+  /*      public List<Locations> GetLocation(QueryObject query)
+        {
+            var _locations = Context.Locations.AsQueryable();
+
+            if (!string.IsNullOrEmpty(query.Straat))
+            {
+                _locations = _locations.Where(e => e.Straat.Contains(query.Straat));
+            }
+
+            var ColumnsMap = new Dictionary<string, Expression<Func<Straat, object>>>
+            {
+                ["Locations"] = c => c.Straat,
+                ["abbr"] = c => c.
+                       };
+            Locations = locations.ApplyOrdering(query, ColumnsMap);
+
+            //Do paging as you have done earlier
+
+            return employees.ToList();
+        }
+  
+        //This function orders based on the key and Expression Function You pass
+
+        public static IQueryable<T> ApplyOrdering<T>(this IQueryable<T> query, QueryObject queryObj, Dictionary<string, Expression<Func<T, object>>> columnsMap)
+        {
+            if (string.IsNullOrWhiteSpace(queryObj.SortBy) || !columnsMap.ContainsKey(queryObj.SortBy))
+                return query;
+
+            return queryObj.IsSortAscending ? query.OrderBy(columnsMap[queryObj.SortBy]) : query.OrderByDescending(columnsMap[queryObj.SortBy]);
+        }
+  */
     }
 }
