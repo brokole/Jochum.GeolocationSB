@@ -93,7 +93,7 @@ namespace Jochum.GeoLocationsB.Controllers
             return Ok();
         }
 
-        //Search: function
+        //Search: function/ascending
         [HttpGet("search ascending order")]
         public async Task<ActionResult<Locations>> Search(String query)
         {
@@ -106,7 +106,7 @@ namespace Jochum.GeoLocationsB.Controllers
             return Ok(Locations);
         }
 
-        // GET: api/Locations/descending
+        // Search: function/descending
         [HttpGet("search descending order")]
         public async Task<ActionResult<Locations>> search(String query)
         {
