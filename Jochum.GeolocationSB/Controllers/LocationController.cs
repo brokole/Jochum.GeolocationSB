@@ -7,6 +7,7 @@ using Jochum.GeolocationSB.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Jochum.GeoLocationsB.Controllers
 {
@@ -28,7 +29,7 @@ namespace Jochum.GeoLocationsB.Controllers
         {
             var Locations = await Context.Locations.ToListAsync();
             Locations.Reverse();
-            return Ok(Locations);  
+            return Ok(Locations);
         }
 
         // GET api/Locations/5
@@ -59,7 +60,7 @@ namespace Jochum.GeoLocationsB.Controllers
 
         // PUT api/Locations/5
         [HttpPut("{id}")]
-         public async Task<IActionResult> Put([FromBody] Locations Location)
+        public async Task<IActionResult> Put([FromBody] Locations Location)
         {
             if (Location == null || Location.Id == 0 || String.IsNullOrEmpty(Location.Straat))
             {
@@ -91,28 +92,35 @@ namespace Jochum.GeoLocationsB.Controllers
             await Context.SaveChangesAsync();
             return Ok();
         }
-       [HttpGet("GetAll ascending order")]
-        public async Task<ActionResult<Locations>> GetAll()
-        {
-            var Locations = Context.Locations.OrderBy(c => c.Id).ToList();
 
-            return Ok(Locations);
-        }
-        // GET: api/Locations/descending
-        [HttpGet("GetAll descending order")]
-        public async Task<ActionResult<Locations>> Getall()
-        {
-            var Locations = Context.Locations.OrderBy(c => c.Id).ToList();
-            Locations.Reverse();
-            return Ok(Locations);
-        }
         //Search: function
-        [HttpPut("search")]
-        public async Task<ActionResult<Locations>> Search()
+        [HttpGet("search ascending order")]
+        public async Task<ActionResult<Locations>> Search(String query)
         {
-            var Locations = Context.Locations.OrderBy(c => c.Id).ToList();
+            var Locations = Context.Locations.Where((loc =>
+                    loc.HuisNummer.Contains(query) || loc.Straat.Contains(query) ||
+                    loc.PostCode.Contains(query) || loc.Plaats.Contains(query) ||
+                    loc.Land.Contains(query)
+                )).OrderBy(c => c.Id).ToList();
 
+            return Ok(Locations);
+        }
+
+        // GET: api/Locations/descending
+        [HttpGet("search descending order")]
+        public async Task<ActionResult<Locations>> search(String query)
+        {
+            var Locations = Context.Locations.Where((loc =>
+         loc.HuisNummer.Contains(query) || loc.Straat.Contains(query) ||
+         loc.PostCode.Contains(query) || loc.Plaats.Contains(query) ||
+         loc.Land.Contains(query)
+     )).OrderBy(c => c.Id).ToList();
+            Locations.Reverse();
             return Ok(Locations);
         }
     }
 }
+
+//,  loc.Straat.Contains(query),
+//    loc.PostCode.Contains(query),  loc.Plaats.Contains(query),
+   //                 loc.Land.Contains(query)
