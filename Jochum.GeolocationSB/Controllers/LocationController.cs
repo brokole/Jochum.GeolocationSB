@@ -11,6 +11,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Jochum.GeoLocationsB.Controllers
 {
+
     [Route("api/[controller]")]
     public class LocationController : Controller
     {
@@ -46,15 +47,16 @@ namespace Jochum.GeoLocationsB.Controllers
 
         // POST api/Locations
         [HttpPost]
+        
         public async Task<IActionResult> Post([FromBody] Locations Location)
         {
             if (Location == null || Location.Id != 0 || String.IsNullOrEmpty(Location.Straat) || String.IsNullOrEmpty(Location.HuisNummer) || String.IsNullOrEmpty(Location.Plaats) || String.IsNullOrEmpty(Location.Land) || String.IsNullOrEmpty(Location.PostCode))
             {
-                return StatusCode(StatusCodes.Status400BadRequest);
+             return StatusCode(StatusCodes.Status400BadRequest);
             }
             await Context.Locations.AddAsync(Location);
             Context.SaveChanges();
-
+            
             return Ok();
         }
 
