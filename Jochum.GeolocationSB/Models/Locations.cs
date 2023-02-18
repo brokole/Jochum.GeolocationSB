@@ -16,7 +16,7 @@ namespace Jochum.GeolocationSB.Models
     }
     public class Locations
     {
-        [DisallowNull]
+        //[DisallowNull]
         //  ? == maybe NULL getting info through BAG.Viewer in Nl makes it possible with juts PostCode and HuisNummer
         public long Id { get; set; }
         public string Straat { get; set; }

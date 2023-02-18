@@ -1,4 +1,5 @@
-﻿using System;
+﻿//We start off with our dependencies and our package’s that we are using
+using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -47,24 +48,24 @@ namespace Jochum.GeoLocationsB.Controllers
 
         // POST api/Locations
         [HttpPost]
-        
+
         public async Task<IActionResult> Post([FromBody] Locations Location)
         {
             if (Location == null || Location.Id != 0 || String.IsNullOrEmpty(Location.Straat) || String.IsNullOrEmpty(Location.HuisNummer) || String.IsNullOrEmpty(Location.Plaats) || String.IsNullOrEmpty(Location.Land) || String.IsNullOrEmpty(Location.PostCode))
             {
-             return StatusCode(StatusCodes.Status400BadRequest);
+                return StatusCode(StatusCodes.Status400BadRequest);
             }
             await Context.Locations.AddAsync(Location);
             Context.SaveChanges();
-            
+
             return Ok();
         }
 
-        // PUT api/Locations/5
+        // PUT api/Locations ads data to de database ID is an primary key with an auto increment
         [HttpPut("{id}")]
         public async Task<IActionResult> Put([FromBody] Locations Location)
         {
-            if (Location == null || Location.Id == 0 || String.IsNullOrEmpty(Location.Straat))
+            if (Location == null || Location.Id == 0 || String.IsNullOrEmpty(Location.Straat) || String.IsNullOrEmpty(Location.HuisNummer) || String.IsNullOrEmpty(Location.Plaats) || String.IsNullOrEmpty(Location.Land) || String.IsNullOrEmpty(Location.PostCode))
             {
                 return StatusCode(StatusCodes.Status400BadRequest);
             }
@@ -95,7 +96,7 @@ namespace Jochum.GeoLocationsB.Controllers
             return Ok();
         }
 
-        //Search: function/ascending
+        //Search: function/ascending sorting al fileds staring left to right
         [HttpGet("search ascending order")]
         public async Task<ActionResult<Locations>> Search(String query)
         {
@@ -103,22 +104,103 @@ namespace Jochum.GeoLocationsB.Controllers
                     loc.HuisNummer.Contains(query) || loc.Straat.Contains(query) ||
                     loc.PostCode.Contains(query) || loc.Plaats.Contains(query) ||
                     loc.Land.Contains(query)
-                )).OrderBy(c => c.Id).ToList();
-
+                )).OrderBy(c => c.Id).ThenBy(c => c.HuisNummer).ThenBy(c => c.Straat).ThenBy(c => c.PostCode).ThenBy(c => c.Plaats).ThenBy(c => c.Land).ToList();
+            if (Locations == null)
+            {
+                return NotFound();
+            }
             return Ok(Locations);
         }
 
-        // Search: function/descending
-        [HttpGet("search descending order")]
+        // Search: function/descending sorting al fileds staring left to right
+        [HttpGet("search descending order sorting everyfield")]
         public async Task<ActionResult<Locations>> search(String query)
         {
             var Locations = Context.Locations.Where((loc =>
          loc.HuisNummer.Contains(query) || loc.Straat.Contains(query) ||
          loc.PostCode.Contains(query) || loc.Plaats.Contains(query) ||
          loc.Land.Contains(query)
-     )).OrderBy(c => c.Id).ToList();
+     )).OrderBy(c => c.Id).ThenBy(c => c.HuisNummer).ThenBy(c => c.Straat).ThenBy(c => c.PostCode).ThenBy(c => c.Plaats).ThenBy(c => c.Land).ToList();
+            if (Locations == null)
+            {
+                return NotFound();
+            }
             Locations.Reverse();
             return Ok(Locations);
+        }
+
+        // Search: function/descending id and HuisNummer
+        [HttpGet("search descending order sorting via the HuisNummer")]
+        public async Task<ActionResult<Locations>> _search(String query)
+        {
+            var Locations = Context.Locations.Where((loc =>
+         loc.HuisNummer.Contains(query) || loc.Straat.Contains(query) ||
+         loc.PostCode.Contains(query) || loc.Plaats.Contains(query) ||
+         loc.Land.Contains(query)
+     )).OrderBy(c => c.HuisNummer).ToList();
+            if (Locations == null)
+            {
+                return NotFound();
+            }
+            Locations.Reverse();
+            return Ok(Locations);
+        }
+
+        // Search: function/ascending ID and Huisnummer
+        [HttpGet("search ascending order sorting via the HuisNummer")]
+        public async Task<ActionResult<Locations>> __search(String query)
+        {
+            var Locations = Context.Locations.Where((loc =>
+         loc.HuisNummer.Contains(query) || loc.Straat.Contains(query) ||
+         loc.PostCode.Contains(query) || loc.Plaats.Contains(query) ||
+         loc.Land.Contains(query)
+     )).OrderBy(c => c.HuisNummer).ToList();
+            if (Locations == null)
+            {
+                return NotFound();
+            }
+            return Ok(Locations);
+        }
+
+        // Search: function/descending Id
+        [HttpGet("search descending order sorting ID")]
+        public async Task<ActionResult<Locations>> Idsearch(String query)
+        {
+            var Locations = Context.Locations.Where((loc =>
+         loc.HuisNummer.Contains(query) || loc.Straat.Contains(query) ||
+         loc.PostCode.Contains(query) || loc.Plaats.Contains(query) ||
+         loc.Land.Contains(query)
+     )).OrderBy(c => c.Id).ToList();
+            if (Locations == null)
+            {
+                return NotFound();
+            }
+            Locations.Reverse();
+            return Ok(Locations);
+        }
+
+        // Search: function/ascending id
+        [HttpGet("search ascending order sorting ID")]
+        public async Task<ActionResult<Locations>> _Idsearch(String query)
+        {
+            var Locations = Context.Locations.Where((loc =>
+         loc.HuisNummer.Contains(query) || loc.Straat.Contains(query) ||
+         loc.PostCode.Contains(query) || loc.Plaats.Contains(query) ||
+         loc.Land.Contains(query)
+     )).OrderBy(c => c.Id).ToList();
+            if (Locations == null)
+            {
+                return NotFound();
+            }
+            Locations.Reverse();
+            return Ok(Locations);
+            /*  [HttpGet("get longitude and latitude")]
+              public async Task<IActionResult>longitude()
+              {
+                  var Locations = await Context.Locations.ToListAsync();
+                  Locations.Reverse();
+                  return Ok(Locations);
+              }*/
         }
     }
 }
