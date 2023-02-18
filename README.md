@@ -127,7 +127,8 @@ Redundancy.cs is full of old code that I changed made better or simply didn’t 
 
 While working on the Project I had a lot of fun but in the end I could finish all of it. Starting Monday I had worked almost every hour I was awake and I was not enjoying my self at the tail end of it all. I couldn’t think straight and had no clue as to actually talk to a API That would give me all the information I would need. All I could find here either API’s that would return address information and a latitude and a longitude or calculate distance between two separate instances of latitude and longitude never the combination of both.
 
-(see attached screen shot)
+![Screenshot_1](https://user-images.githubusercontent.com/22211391/219872155-bc85b120-81e2-462f-84b6-77e56393fd9b.png)
+
 
 So I was thinking of a way to get only the longitude and latitude information from http://api.positionstack.com/v1/forward and then send that info to OpenStreetMaps, to have OpenStreetMaps return me distance. That was the Most logical thing I could think of.
 
