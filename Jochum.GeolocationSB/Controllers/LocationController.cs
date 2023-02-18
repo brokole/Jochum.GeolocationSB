@@ -105,10 +105,7 @@ namespace Jochum.GeoLocationsB.Controllers
                     loc.PostCode.Contains(query) || loc.Plaats.Contains(query) ||
                     loc.Land.Contains(query)
                 )).OrderBy(c => c.Id).ThenBy(c => c.HuisNummer).ThenBy(c => c.Straat).ThenBy(c => c.PostCode).ThenBy(c => c.Plaats).ThenBy(c => c.Land).ToList();
-            if (Locations == null)
-            {
-                return NotFound();
-            }
+
             return Ok(Locations);
         }
 
@@ -121,10 +118,6 @@ namespace Jochum.GeoLocationsB.Controllers
          loc.PostCode.Contains(query) || loc.Plaats.Contains(query) ||
          loc.Land.Contains(query)
      )).OrderBy(c => c.Id).ThenBy(c => c.HuisNummer).ThenBy(c => c.Straat).ThenBy(c => c.PostCode).ThenBy(c => c.Plaats).ThenBy(c => c.Land).ToList();
-            if (Locations == null)
-            {
-                return NotFound();
-            }
             Locations.Reverse();
             return Ok(Locations);
         }
@@ -138,16 +131,12 @@ namespace Jochum.GeoLocationsB.Controllers
          loc.PostCode.Contains(query) || loc.Plaats.Contains(query) ||
          loc.Land.Contains(query)
      )).OrderBy(c => c.HuisNummer).ToList();
-            if (Locations == null)
-            {
-                return NotFound();
-            }
             Locations.Reverse();
             return Ok(Locations);
         }
 
         // Search: function/ascending ID and Huisnummer
-        [HttpGet("search ascending order sorting via the HuisNummer")]
+        [HttpGet("search ascending order sorting the HuisNummer")]
         public async Task<ActionResult<Locations>> __search(String query)
         {
             var Locations = Context.Locations.Where((loc =>
@@ -155,10 +144,6 @@ namespace Jochum.GeoLocationsB.Controllers
          loc.PostCode.Contains(query) || loc.Plaats.Contains(query) ||
          loc.Land.Contains(query)
      )).OrderBy(c => c.HuisNummer).ToList();
-            if (Locations == null)
-            {
-                return NotFound();
-            }
             return Ok(Locations);
         }
 
@@ -171,10 +156,6 @@ namespace Jochum.GeoLocationsB.Controllers
          loc.PostCode.Contains(query) || loc.Plaats.Contains(query) ||
          loc.Land.Contains(query)
      )).OrderBy(c => c.Id).ToList();
-            if (Locations == null)
-            {
-                return NotFound();
-            }
             Locations.Reverse();
             return Ok(Locations);
         }
@@ -188,10 +169,6 @@ namespace Jochum.GeoLocationsB.Controllers
          loc.PostCode.Contains(query) || loc.Plaats.Contains(query) ||
          loc.Land.Contains(query)
      )).OrderBy(c => c.Id).ToList();
-            if (Locations == null)
-            {
-                return NotFound();
-            }
             Locations.Reverse();
             return Ok(Locations);
             /*  [HttpGet("get longitude and latitude")]
