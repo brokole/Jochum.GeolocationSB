@@ -2,13 +2,13 @@
 
 SB Project omtrent geolocatie
 Dependecies of NuGet: 
-
+ ```
     Microsoft.EntityFrameworkCore
     Microsoft.EntityFrameworkCore.InMemory
     Microsoft.EntityFrameworkCore.Sqlite
     sqlite-net-pcl
     Swashbuckle.AspNetCore
-   
+ ```  
 Dont forget them
 
 So for starters I chose .net 6 as my main framework.
@@ -21,14 +21,14 @@ So here we go what did I make.
 Let’s start with the Controller.
 We start off with our dependencies and our package’s.
 Next we give it a route so we can access the Controller through a URL and read out the data.
-[Route("api/[controller]")]
+ ```[Route("api/[controller]")] ```
 
 Following the route we create our Controller Class with which we shall give functions for the API to use.
 We are using a SqLite database which we create in our SqliteContext.cs file in the Data folder. This database we need to be able to call, for any context we might need for editing and storing data in our database. So, we make a context variable that gives us our context(information). Of course this is the context in our database but we might want to enter data into our database so we need to be able to get our http request to the database. For this purpose, we create a HttpContext to read out the data and send it to our database.
 
 Next we need to be able to Get the data stored in our database.
 We call on this data through:
-
+```
 [HttpGet] 
 public async Task<IActionResult> Get()
 {
@@ -52,9 +52,11 @@ Of course if there is no Id it should tell us so:
             }
             return Ok(Location);
         }
+```
 Great now we can Get everything or get specific data by using an Id.
-But what if I want to add something to our database. This can be done through the [HttpPost] function. Of course we don’t want any empty fields in our database so when filling in the data make sure to fill in every bit. If done incorrectly and a field is left NULL you will get a Status400BadRequest.
+But what if I want to add something to our database. This can be done through the  ```[HttpPost] ``` function. Of course we don’t want any empty fields in our database so when filling in the data make sure to fill in every bit. If done incorrectly and a field is left NULL you will get a Status400BadRequest.
 The code to added the data in the database is as follows:
+```
 public async Task<IActionResult> Post([FromBody] Locations Location)
         {
             if (Location == null || Location.Id != 0 || String.IsNullOrEmpty(Location.Straat) || String.IsNullOrEmpty(Location.HuisNummer) || String.IsNullOrEmpty(Location.Plaats) || String.IsNullOrEmpty(Location.Land) || String.IsNullOrEmpty(Location.PostCode))
@@ -66,9 +68,11 @@ public async Task<IActionResult> Post([FromBody] Locations Location)
             
             return Ok();
         }
+ ```
 (this could have been done a lot nicer but this was the easiest way that I knew how)
-Next up maybe when we entered data we made a spelling mistake well then we need to have an edit function. For this edit function we use [HttpPut("{id}")]. Which will allow us to get data from the database through an Id and then overwrite the existing data in the database. Again we cant have a Empty field so if left empty you will get a Status400BadRequest.If per chance someone else deleted the Id you where editing we would not be able to sent the data and we need to tell the user that there data isn’t there anymore. So if the data has gone missing in the time that you have been editing it will send you a notFound() result. The code is as follows:
-        public async Task<IActionResult> Put([FromBody] Locations Location)
+Next up maybe when we entered data we made a spelling mistake well then we need to have an edit function. For this edit function we use  ```[HttpPut("{id}")] ```. Which will allow us to get data from the database through an Id and then overwrite the existing data in the database. Again we cant have a Empty field so if left empty you will get a  ```Status400BadRequest ```.If per chance someone else deleted the Id you where editing we would not be able to sent the data and we need to tell the user that there data isn’t there anymore. So if the data has gone missing in the time that you have been editing it will send you a notFound() result. The code is as follows:
+```      
+    public async Task<IActionResult> Put([FromBody] Locations Location)
         {
             if (Location == null || Location.Id == 0 || String.IsNullOrEmpty(Location.Straat) || String.IsNullOrEmpty(Location.HuisNummer) || String.IsNullOrEmpty(Location.Plaats) || String.IsNullOrEmpty(Location.Land) || String.IsNullOrEmpty(Location.PostCode))
             {
@@ -85,8 +89,9 @@ Next up maybe when we entered data we made a spelling mistake well then we need 
 
             return Ok();
         }
-Next a user might no longer want there address in the database so we should be able to delete there data (normally you would Hash the data add a time stamp of the moment of request and put that info in the place of the actual data. Long live the AVG) In this case we are going to simply delete the id and all the data connected to the Id. Of course we again cannot delete something that doesn’t exist so we check again does the Id exist yes alright lets delete it otherwise return NotFound(). The code Is as follows:
-
+ ```
+Next a user might no longer want there address in the database so we should be able to delete there data (normally you would Hash the data add a time stamp of the moment of request and put that info in the place of the actual data. Long live the AVG) In this case we are going to simply delete the id and all the data connected to the Id. Of course we again cannot delete something that doesn’t exist so we check again does the Id exist yes alright lets delete it otherwise return  ```NotFound() ```. The code Is as follows:
+ ```
 public async Task<IActionResult> Delete(int id)
         {
             var Location = Context.Locations.SingleOrDefault(p => p.Id == id);
@@ -99,10 +104,11 @@ public async Task<IActionResult> Delete(int id)
             await Context.SaveChangesAsync();
             return Ok();
         }
+  ```
 Next we might have users that are living in the same street
-So we might need to sort all our data for a street or look at everyone that lives on Number 12 in every street for this we need a search function and a sort function. I wasn’t able to create a Sorting function that would sort every field one by one how I wanted it but I did my best. This took the most amount of time and I am the most proud of it that why there are 6 of them. Each one sorts it in a different way some ascending or descending some by id some by HuisNummer.
+So we might need to sort all our data for a street or look at everyone that lives on Number 12 in every street for this we need a search function and a sort function. I wasn’t able to create a Sorting function that would sort every field one by one how I wanted it but I did my best. This took the most amount of time and I am the most proud of it that why there are 6 of them. Each one sorts it in a different way some ascending or descending some by id some by  ```HuisNummer ```.
 I had a blast figuring out how to do it in the most compact way I could think of. I will only show one example:
-
+ ```
         [HttpGet("search descending order sorting via the HuisNummer")]
         public async Task<ActionResult<Locations>> _search(String query)
         {
@@ -114,6 +120,7 @@ I had a blast figuring out how to do it in the most compact way I could think of
             Locations.Reverse();
             return Ok(Locations);
         }
+ ```
 This is how the API functions and makes you able to call and get differing information by calling separate functions connected to the API.
 
 Now for the less exciting stuff.
