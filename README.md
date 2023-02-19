@@ -137,7 +137,7 @@ While working on the Project I had a lot of fun but in the end I could finish al
 ![Screenshot_1](https://user-images.githubusercontent.com/22211391/219872155-bc85b120-81e2-462f-84b6-77e56393fd9b.png)
 
 
-So I was thinking of a way to get only the longitude and latitude information from http://api.positionstack.com/v1/forward and then send that info to OpenStreetMaps, to have OpenStreetMaps return me distance. That was the Most logical thing I could think of.
+So first i would first need to put 2 locations into a database and then sent de info from that databse via Id Query to positionstack get the Logitude and latitude of both locations and sent that information to openstreetmap to get the distance between both points, and send that information togheter with the Location details from the database to the user.
 
 I got as far as getting all the info from http://api.positionstack.com/v1/forward 
 But then I got stuck. I asked friends around me how I could send the data as a query to OpenStreetMaps But I would have to first get 2 separate Gets and get 4 sets of coordinates to then ask the distance so it would be a timer and all be async. And I found my Limit this is where my Knowledge of .net stops.
