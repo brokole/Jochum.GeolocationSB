@@ -181,7 +181,8 @@ namespace Jochum.GeoLocationsB.Controllers
             Locations.Reverse();
             return Ok(Locations);
         }
-        [HttpGet("get street")]
+
+        [HttpGet("getStreet")]
         private static async Task<ActionResult<Locations>> GetJsonHttpClient(string uri, HttpClient httpClient)
         {
             uri = "https://api.positionstack.com/v1/forward?access_key=a97cb9accc1ba0517bf4b7e8c0a29135&query = 1600 Pennsylvania Ave NW, Washington DC";
@@ -204,7 +205,49 @@ namespace Jochum.GeoLocationsB.Controllers
 
             return null;
         }
+        public abstract class ClientAPI
+        {
+            protected readonly HttpClient Http;
+            private readonly string BaseRoute;
+
+            protected ClientAPI(string baseRoute, HttpClient http)
+            {
+                BaseRoute = baseRoute;
+                Http = http;
+            }
+
+            protected async Task<TReturn> GetAsync<TReturn>(string relativeUri)
+            {
+                HttpResponseMessage res = await Http.GetAsync($"{BaseRoute}/{relativeUri}");
+                if (res.IsSuccessStatusCode)
+                {
+                    return await res.Content.ReadFromJsonAsync<TReturn>();
+                }
+                else
+                {
+                    string msg = await res.Content.ReadAsStringAsync();
+                    Console.WriteLine(msg);
+                    throw new Exception(msg);
+                }
+            }
+
+            protected async Task<TReturn> PostAsync<TReturn, TRequest>(string relativeUri, TRequest request)
+            {
+                HttpResponseMessage res = await Http.PostAsJsonAsync<TRequest>($"{BaseRoute}/{relativeUri}", request);
+                if (res.IsSuccessStatusCode)
+                {
+                    return await res.Content.ReadFromJsonAsync<TReturn>();
+                }
+                else
+                {
+                    string msg = await res.Content.ReadAsStringAsync();
+                    Console.WriteLine(msg);
+                    throw new Exception(msg);
+                }
+            }
+        }
     }
+}
 
     //results > latitude	Returns the latitude coordinate associated with the location result.
     //results > longitude Returns the longitude coordinate associated with the location result.
@@ -227,7 +270,7 @@ namespace Jochum.GeoLocationsB.Controllers
 
                    Console.Write(json);
                }   */
-}
+
         
     
 
