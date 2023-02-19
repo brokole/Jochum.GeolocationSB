@@ -174,7 +174,6 @@ namespace Jochum.GeoLocationsB.Controllers
             return Ok(Locations);
         }
     }
-}
 
 //,  loc.Straat.Contains(query),
 //    loc.PostCode.Contains(query),  loc.Plaats.Contains(query),
@@ -184,7 +183,7 @@ namespace Jochum.GeoLocationsB.Controllers
           [HttpGet("get longitude and latitude")]
              public async Task<IActionResult>longitude()
              {
-                https://api.positionstack.com/v1/forward
+               HttpRequest url = https://api.positionstack.com/v1/forward
                  ? access_key = a97cb9accc1ba0517bf4b7e8c0a29135
                  & AsyncCallback = Query_;
 
