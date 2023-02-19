@@ -24,6 +24,7 @@ namespace Jochum.GeolocationSB.Models
         public string PostCode { get; set; }
         public string Plaats { get; set; }
         public string Land { get; set ; }
+
     }
 
     public class QueryObject
@@ -43,12 +44,13 @@ namespace Jochum.GeolocationSB.Models
         private string latitude { get; set; }
      // private string Type { get; set; }
      // private string name { get; set; }
-        private int number { get; set; }
+        private string number { get; set; }
         private string Postal_code { get; set; }
         private string street { get; set; }
         private string region { get; set; }
         private string Country { get; set; }
         private string locality { get; set; }
     }
+  
     
 }

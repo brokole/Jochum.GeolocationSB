@@ -3,17 +3,17 @@
 
 //Stuff from Location Controller
 
-            // test with out db to make sure values aren't null
-            // also it breaks everything if you enable it because the code will try to edit Id 1 2 and 3 to the current values and then change the values to the values bellow
+// test with out db to make sure values aren't null
+// also it breaks everything if you enable it because the code will try to edit Id 1 2 and 3 to the current values and then change the values to the values bellow
 
-            /*if (Context.Locations.Count() == 0)
-            {
-                Context.Locations.Add(new Locations { Id = 1, Straat = "1", HuisNummer = "2", PostCode = "3", Plaats = "4", Land = "5" });
-                Context.Locations.Add(new Locations { Id = 2, Straat = "1", HuisNummer = "2", PostCode = "3", Plaats = "4", Land = "5" });
-                Context.Locations.Add(new Locations { Id = 3, Straat = "1", HuisNummer = "2", PostCode = "3", Plaats = "4", Land = "5" });
-                Context.SaveChanges();
-            }  */
-        
+/*if (Context.Locations.Count() == 0)
+{
+    Context.Locations.Add(new Locations { Id = 1, Straat = "1", HuisNummer = "2", PostCode = "3", Plaats = "4", Land = "5" });
+    Context.Locations.Add(new Locations { Id = 2, Straat = "1", HuisNummer = "2", PostCode = "3", Plaats = "4", Land = "5" });
+    Context.Locations.Add(new Locations { Id = 3, Straat = "1", HuisNummer = "2", PostCode = "3", Plaats = "4", Land = "5" });
+    Context.SaveChanges();
+}  */
+
 /*
         public async Task<IActionResult> Index(string sortOrder)
         {
@@ -59,6 +59,92 @@
 
 // redundant Startup.cs
 
+
+// trying to get the longitude and latitude
+/*      [HttpGet("get longitude and latitude")]
+               public async Task<IActionResult> longitude()
+               {
+                 Uri HttpClient.BaseAddress = new Uri("https://api.positionstack.com/v1/forward")
+                        ? access_key = a97cb9accc1ba0517bf4b7e8c0a29135
+                        & AsyncCallback = Query_;
+
+                   var Query_ = await Context.Query_.ToListAsync();
+                   Query_.Reverse();
+                   return Ok(Query_);
+               }
+               static async Task ProcessRepositoriesAsync(HttpClient client)
+               {
+                   var json = await client.GetStringAsync(
+                       "https://api.positionstack.com/v1/forward");
+
+                   Console.Write(json);
+               }   */
+
+
+/*
+      //First try at talking to an api
+
+        public abstract class ClientAPI
+        {
+            protected readonly HttpClient Http;
+            private readonly string BaseRoute;
+
+            protected ClientAPI(string baseRoute, HttpClient http)
+            {
+                BaseRoute = baseRoute;
+                Http = http;
+            }
+
+            protected async Task<TReturn> GetAsync<TReturn>(string relativeUri)
+            {
+                HttpResponseMessage res = await Http.GetAsync($"{BaseRoute}/{relativeUri}");
+                if (res.IsSuccessStatusCode)
+                {
+                    return await res.Content.ReadFromJsonAsync<TReturn>();
+                }
+                else
+                {
+                    string msg = await res.Content.ReadAsStringAsync();
+                    Console.WriteLine(msg);
+                    throw new Exception(msg);
+                }
+            }
+
+            protected async Task<TReturn> PostAsync<TReturn, TRequest>(string relativeUri, TRequest request)
+            {
+                HttpResponseMessage res = await Http.PostAsJsonAsync<TRequest>($"{BaseRoute}/{relativeUri}", request);
+                if (res.IsSuccessStatusCode)
+                {
+                    return await res.Content.ReadFromJsonAsync<TReturn>();
+                }
+                else
+                {
+                    string msg = await res.Content.ReadAsStringAsync();
+                    Console.WriteLine(msg);
+                    throw new Exception(msg);
+                }
+            }
+
+            
+            public class MySpecificAPI : ClientAPI
+            {
+                public MySpecificAPI(HttpClient http) : base("api/myspecificapi", http) { }
+                public async Task<IEnumerable<Locations>> GetMyClassAsync(int ownerId)
+            {
+                try
+                {
+                    return await GetAsync<IEnumerable<Locations>>($"apiMethodName?ownerId={ownerId}");
+                }
+                catch (Exception e)
+                {
+                    return null;
+                }
+        }
+        //   public async Task<ActionResult<Locations>> GetJsonHttpClient(string uri, HttpClient httpClient)
+      //  {
+         //   uri = "https://api.positionstack.com/v1/forward?access_key=a97cb9accc1ba0517bf4b7e8c0a29135&query = 1600 Pennsylvania Ave NW, Washington DC";
+            
+*/
 
 /* using Jochum.GeolocationSB.Data;
 using Microsoft.EntityFrameworkCore;

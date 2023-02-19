@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Jochum.GeolocationSB.Models;
 using Jochum.GeolocationSB;
 using Jochum.GeolocationSB.Data;
+using System.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,23 @@ builder.Services.AddMvc();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 var app = builder.Build();
+
+
+using HttpClient client = new();
+client.DefaultRequestHeaders.Accept.Clear();
+client.DefaultRequestHeaders.Accept.Add(
+    new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
+
+await ProcessRepositoriesAsync(client);
+
+static async Task ProcessRepositoriesAsync(HttpClient client)
+{
+    var json = await client.GetStringAsync(
+    "http://api.positionstack.com/v1/forward?access_key=a97cb9accc1ba0517bf4b7e8c0a29135&query=74, eschersingel, 3544ml, utrecht");
+
+    Console.Write(json);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
