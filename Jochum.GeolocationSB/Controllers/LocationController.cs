@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
+
 namespace Jochum.GeoLocationsB.Controllers
 {
 
@@ -171,17 +172,24 @@ namespace Jochum.GeoLocationsB.Controllers
      )).OrderBy(c => c.Id).ToList();
             Locations.Reverse();
             return Ok(Locations);
-            /*  [HttpGet("get longitude and latitude")]
-              public async Task<IActionResult>longitude()
-              {
-                  var Locations = await Context.Locations.ToListAsync();
-                  Locations.Reverse();
-                  return Ok(Locations);
-              }*/
         }
     }
 }
 
 //,  loc.Straat.Contains(query),
 //    loc.PostCode.Contains(query),  loc.Plaats.Contains(query),
-   //                 loc.Land.Contains(query)
+//                 loc.Land.Contains(query)
+
+/*
+          [HttpGet("get longitude and latitude")]
+             public async Task<IActionResult>longitude()
+             {
+                https://api.positionstack.com/v1/forward
+                 ? access_key = a97cb9accc1ba0517bf4b7e8c0a29135
+                 & AsyncCallback = Query_;
+
+                 var Query_ = await Context.Query_.ToListAsync();
+                 Query_.Reverse();
+                 return Ok(Query_);
+             }
+*/

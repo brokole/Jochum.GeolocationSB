@@ -35,4 +35,26 @@ namespace Jochum.GeolocationSB.Models
         public string Plaats { get; set; }
         public string Land { get; set; }
     }
+
+/*
+    Locations.Straat = Query_.Street
+    Locations.HuisNummer = Query_.number
+    Locations.PostCode = Query_.Postal_code
+    Locations.Plaats = Query_.Locality
+    Locations.Straat = Query_.Street
+
+    public class Query_
+    {
+        private string Longitude { get; set; };
+        private string latitude { get; set; };
+     // private string Type { get; set; }
+     // private string name { get; set; }
+        private int number { get; set; }
+        private string Postal_code { get; set; }
+        private string street { get; set; }
+        private string region { get; set; }
+        private string Country { get; set; }
+        private string locality { get; set; }
+    }
+    */
 }
