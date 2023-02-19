@@ -3,13 +3,16 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net.Http.Headers;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Jochum.GeolocationSB.Data;
 using Jochum.GeolocationSB.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static System.Net.WebRequestMethods;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using static SQLite.SQLite3;
 
 /*static async Task ProcessRepositoriesAsync(HttpClient client)
 {
@@ -178,37 +181,33 @@ namespace Jochum.GeoLocationsB.Controllers
             Locations.Reverse();
             return Ok(Locations);
         }
-
-        public static async void GetLocation()
+        [HttpGet("get street")]
+        private static async Task<ActionResult<Locations>> GetJsonHttpClient(string uri, HttpClient httpClient)
         {
-            string baseUrl = "https://api.positionstack.com/v1/forward";
+            uri = "https://api.positionstack.com/v1/forward?access_key=a97cb9accc1ba0517bf4b7e8c0a29135&query = 1600 Pennsylvania Ave NW, Washington DC";
             try
             {
-                using (HttpClient client = new HttpClient())
-                {
-                    using (HttpResponseMessage res = await client.GetAsync(baseUrl))
-                    {
-                        using (HttpContent content = res.Content)
-                        {
-                            var data = await content.ReadAsStringAsync();
-                            if (data != null)
-                            {
-                                Console.WriteLine("data------------{0}", data);
-                            }
-                            else
-                            {
-                                Console.WriteLine("NO Data----------");
-                            }
-                        }
-                    }
-                }
+                return await httpClient.GetFromJsonAsync<ActionResult<Locations>>(uri);
             }
-            catch (Exception exception)
+            catch (HttpRequestException) // Non success
             {
-                Console.WriteLine("Exception Hit------------");
-                Console.WriteLine(exception);
+                Console.WriteLine("An error occurred.");
             }
+            catch (NotSupportedException) // When content type is not valid
+            {
+                Console.WriteLine("The content type is not supported.");
+            }
+            catch (JsonException) // Invalid JSON
+            {
+                Console.WriteLine("Invalid JSON.");
+            }
+
+            return null;
         }
+    }
+
+    //results > latitude	Returns the latitude coordinate associated with the location result.
+    //results > longitude Returns the longitude coordinate associated with the location result.
 
         /*      [HttpGet("get longitude and latitude")]
                public async Task<IActionResult> longitude()
@@ -228,8 +227,8 @@ namespace Jochum.GeoLocationsB.Controllers
 
                    Console.Write(json);
                }   */
-    }
-        }
+}
+        
     
 
 
