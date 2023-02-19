@@ -182,29 +182,6 @@ namespace Jochum.GeoLocationsB.Controllers
             return Ok(Locations);
         }
 
-        [HttpGet("getStreet")]
-        private static async Task<ActionResult<Locations>> GetJsonHttpClient(string uri, HttpClient httpClient)
-        {
-            uri = "https://api.positionstack.com/v1/forward?access_key=a97cb9accc1ba0517bf4b7e8c0a29135&query = 1600 Pennsylvania Ave NW, Washington DC";
-            try
-            {
-                return await httpClient.GetFromJsonAsync<ActionResult<Locations>>(uri);
-            }
-            catch (HttpRequestException) // Non success
-            {
-                Console.WriteLine("An error occurred.");
-            }
-            catch (NotSupportedException) // When content type is not valid
-            {
-                Console.WriteLine("The content type is not supported.");
-            }
-            catch (JsonException) // Invalid JSON
-            {
-                Console.WriteLine("Invalid JSON.");
-            }
-
-            return null;
-        }
         public abstract class ClientAPI
         {
             protected readonly HttpClient Http;
@@ -245,6 +222,28 @@ namespace Jochum.GeoLocationsB.Controllers
                     throw new Exception(msg);
                 }
             }
+
+            
+            public class MySpecificAPI : ClientAPI
+            {
+                public MySpecificAPI(HttpClient http) : base("api/myspecificapi", http) { }
+                public async Task<IEnumerable<Locations>> GetMyClassAsync(int ownerId)
+            {
+                try
+                {
+                    return await GetAsync<IEnumerable<Locations>>($"apiMethodName?ownerId={ownerId}");
+                }
+                catch (Exception e)
+                {
+                    return null;
+                }
+        }
+        //   public async Task<ActionResult<Locations>> GetJsonHttpClient(string uri, HttpClient httpClient)
+      //  {
+         //   uri = "https://api.positionstack.com/v1/forward?access_key=a97cb9accc1ba0517bf4b7e8c0a29135&query = 1600 Pennsylvania Ave NW, Washington DC";
+            
+        }
+        
         }
     }
 }
