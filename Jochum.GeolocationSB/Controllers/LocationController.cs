@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Jochum.GeolocationSB.Data;
 using Jochum.GeolocationSB.Models;
@@ -10,9 +11,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
+/*static async Task ProcessRepositoriesAsync(HttpClient client)
+{
+}*/
 
 namespace Jochum.GeoLocationsB.Controllers
 {
+
 
     [Route("api/[controller]")]
     public class LocationController : Controller
@@ -173,22 +178,71 @@ namespace Jochum.GeoLocationsB.Controllers
             Locations.Reverse();
             return Ok(Locations);
         }
+
+        [HttpGet("search ascending order sorting IdaswdfqD")]
+        public static async void GetLocation()
+        {
+            //Define your baseUrl
+            string baseUrl = "https://api.positionstack.com/v1/forward";
+            //Have your using statements within a try/catch block
+            try
+            {
+                //We will now define your HttpClient with your first using statement which will use a IDisposable.
+                using (HttpClient client = new HttpClient())
+                {
+                    //In the next using statement you will initiate the Get Request, use the await keyword so it will execute the using statement in order.
+                    //The HttpResponseMessage which contains status code, and data from response.
+                    using (HttpResponseMessage res = await client.GetAsync(baseUrl))
+                    {
+                        //Then get the data or content from the response in the next using statement, then within it you will get the data, and convert it to a c# object.
+                        using (HttpContent content = res.Content)
+                        {
+                            var data = await content.ReadAsStringAsync();
+                            //If the data isn't null return log convert the data using newtonsoft JObject Parse class method on the data.
+                            if (data != null)
+                            {
+                                //Now log your data in the console
+                                Console.WriteLine("data------------{0}", data);
+                            }
+                            else
+                            {
+                                Console.WriteLine("NO Data----------");
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine("Exception Hit------------");
+                Console.WriteLine(exception);
+            }
+        }
+
+        /*      [HttpGet("get longitude and latitude")]
+               public async Task<IActionResult> longitude()
+               {
+                 Uri HttpClient.BaseAddress = new Uri("https://api.positionstack.com/v1/forward")
+                        ? access_key = a97cb9accc1ba0517bf4b7e8c0a29135
+                        & AsyncCallback = Query_;
+
+                   var Query_ = await Context.Query_.ToListAsync();
+                   Query_.Reverse();
+                   return Ok(Query_);
+               }
+               static async Task ProcessRepositoriesAsync(HttpClient client)
+               {
+                   var json = await client.GetStringAsync(
+                       "https://api.positionstack.com/v1/forward");
+
+                   Console.Write(json);
+               }   */
     }
+        }
+    
+
 
 //,  loc.Straat.Contains(query),
 //    loc.PostCode.Contains(query),  loc.Plaats.Contains(query),
 //                 loc.Land.Contains(query)
 
-/*
-          [HttpGet("get longitude and latitude")]
-             public async Task<IActionResult>longitude()
-             {
-               HttpRequest url = https://api.positionstack.com/v1/forward
-                 ? access_key = a97cb9accc1ba0517bf4b7e8c0a29135
-                 & AsyncCallback = Query_;
-
-                 var Query_ = await Context.Query_.ToListAsync();
-                 Query_.Reverse();
-                 return Ok(Query_);
-             }
-*/
