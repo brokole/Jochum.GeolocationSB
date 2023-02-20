@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SQLite;
 using System.Diagnostics.CodeAnalysis;
 
@@ -24,7 +25,6 @@ namespace Jochum.GeolocationSB.Models
         public string PostCode { get; set; }
         public string Plaats { get; set; }
         public string Land { get; set ; }
-
     }
 
     public class QueryObject
@@ -37,7 +37,7 @@ namespace Jochum.GeolocationSB.Models
         public string Land { get; set; }
     }
 
-
+    // for parsing the json readout to the database
     public class Query_
     {
         private string Longitude { get; set; }
@@ -51,6 +51,7 @@ namespace Jochum.GeolocationSB.Models
         private string Country { get; set; }
         private string locality { get; set; }
     }
-  
-    
+
+
+
 }

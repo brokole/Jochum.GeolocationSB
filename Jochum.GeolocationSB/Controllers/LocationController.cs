@@ -13,20 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using static System.Net.WebRequestMethods;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using static SQLite.SQLite3;
-
-/*static async Task ProcessRepositoriesAsync(HttpClient client)
-{
-}*/
-
-static async Task ProcessRepositoriesAsync(HttpClient client)
-{
-    
-    var json = await client.GetStringAsync(
-    "http://api.positionstack.com/v1/forward?access_key=a97cb9accc1ba0517bf4b7e8c0a29135&query=74, eschersingel, 3544ml, utrecht");
-   
-    Console.Write(json);
-}
-
+using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 
 namespace Jochum.GeoLocationsB.Controllers
@@ -191,17 +179,18 @@ namespace Jochum.GeoLocationsB.Controllers
      )).OrderBy(c => c.Id).ToList();
             Locations.Reverse();
             return Ok(Locations);
-        } 
+        }
     }
 }
 
 
-    //results > latitude	Returns the latitude coordinate associated with the location result.
-    //results > longitude Returns the longitude coordinate associated with the location result.
 
-        
-        
-    
+//results > latitude	Returns the latitude coordinate associated with the location result.
+//results > longitude Returns the longitude coordinate associated with the location result.
+
+
+
+
 
 
 //,  loc.Straat.Contains(query),

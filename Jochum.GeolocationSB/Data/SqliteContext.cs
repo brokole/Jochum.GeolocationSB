@@ -14,7 +14,7 @@ namespace Jochum.GeolocationSB.Data
             : base(options)
         {
             // create table
-            String createTable = "CREATE TABLE IF NOT EXISTS 'Locations' ('Id' INTEGER PRIMARY KEY AUTOINCREMENT, 'Straat' TEXT NOT NULL, 'HuisNummer' TEXT NOT NULL,'PostCode' TEXT NOT NULL,'Plaats' TEXT NOT NULL,'Land' TEXT NOT NULL);";
+            String createTable = "CREATE TABLE IF NOT EXISTS 'Locations' ('Id' INTEGER PRIMARY KEY AUTOINCREMENT,'latitude'TEXT,'Longitude'TEXT, 'Straat' TEXT NOT NULL, 'HuisNummer' TEXT NOT NULL,'PostCode' TEXT NOT NULL,'Plaats' TEXT NOT NULL,'Land' TEXT NOT NULL);";
             this.Database.ExecuteSqlRaw(createTable);
             this.SaveChanges();
         }
