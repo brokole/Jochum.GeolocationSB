@@ -132,12 +132,30 @@ SqliteContext.cs Creates the database if there isn’t one already
 
 Redundancy.cs is full of old code that I changed made better or simply didn’t need anymore.
 
-While working on the Project I had a lot of fun but in the end I could finish all of it. Starting Monday I had worked almost every hour I was awake and I was not enjoying my self at the tail end of it all. I couldn’t think straight and had no clue as to actually talk to a API That would give me all the information I would need. All I could find here either API’s that would return address information and a latitude and a longitude or calculate distance between two separate instances of latitude and longitude never the combination of both.
+While working on the Project I had a lot of fun but in the end I couldnt finish all of it. I got the necessary info from the API. using the following code:
+
+```
+//getting the info from the External api
+using HttpClient client = new();
+client.DefaultRequestHeaders.Accept.Clear();
+client.DefaultRequestHeaders.Accept.Add(
+    new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
+
+await ProcessRepositoriesAsync(client);
+
+static async Task ProcessRepositoriesAsync(HttpClient client)
+{
+    var json = await client.GetStringAsync(
+    "http://api.positionstack.com/v1/forward?access_key=a97cb9accc1ba0517bf4b7e8c0a29135&query=74, eschersingel, 3544ml, utrecht");
+
+    Console.Write(json);
+}
+```
 
 ![Screenshot_1](https://user-images.githubusercontent.com/22211391/219872155-bc85b120-81e2-462f-84b6-77e56393fd9b.png)
 
-
-So first i would first need to put 2 locations into a database and then sent de info from that databse via Id Query to positionstack get the Logitude and latitude of both locations and sent that information to openstreetmap to get the distance between both points, and send that information togheter with the Location details from the database to the user.
+After that i would need to put 2 locations into a database and then sent de info from that databse via Id Query to positionstack get the Logitude and latitude of both locations and sent that information to openstreetmap to get the distance between both points, and send that information togheter with the Location details from the database to the user.
 
 I got as far as getting all the info from http://api.positionstack.com/v1/forward 
 But then I got stuck. I asked friends around me how I could send the data as a query to OpenStreetMaps But I would have to first get 2 separate Gets and get 4 sets of coordinates to then ask the distance so it would be a timer and all be async. And I found my Limit this is where my Knowledge of .net stops.
