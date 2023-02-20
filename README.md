@@ -13,7 +13,7 @@ Dont forget them
 
 So for starters I chose .net 6 as my main framework.
 Why .net 6 well it’s the long term support version of .net and works almost completely differently than .net 4, in which I learned to code the little .net I knew
-So it felt like starting from scratch working 8 hours a day and in the evening learning .net 6 and working till I have to go to bed.
+So it felt like starting from scratch.
 It has been quite the mountainous task.
 But I’m proud of how far I have come I learned a lot and it was a lot of fun and I enjoyed myself.
 So here we go what did I make.
