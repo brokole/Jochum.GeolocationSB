@@ -5,6 +5,8 @@ using Jochum.GeolocationSB.Data;
 using System.Net.Http.Headers;
 using System.Data.SQLite;
 using Dapper;
+using System.Data;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,7 +41,17 @@ static async Task ProcessRepositoriesAsync(HttpClient client)
     
     Console.Write(json);
 
+   /* DataSet dataSet = JsonConvert.DeserializeObject<DataSet>(json);
 
+    DataTable dataTable = dataSet.Locations["Table1"];
+
+    Console.WriteLine(dataTable.Rows.Count);
+    // 2
+
+    foreach (DataRow row in dataTable.Rows)
+    {
+        Console.WriteLine(row["id"] + " - " + row["longitude"]);
+    } */
 }
 
 
