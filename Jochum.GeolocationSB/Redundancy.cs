@@ -186,3 +186,42 @@ namespace Jochum.GeolocationSB
 }
 */
 
+/* DataSet dataSet = JsonConvert.DeserializeObject<DataSet>(json);
+
+   DataTable dataTable = dataSet.Locations["Table1"];
+
+   Console.WriteLine(dataTable.Rows.Count);
+   // 2
+
+   foreach (DataRow row in dataTable.Rows)
+   {
+       Console.WriteLine(row["id"] + " - " + row["longitude"]);
+   } */
+
+/*// Make a request to the API and retrieve the JSON data
+var httpClient = new HttpClient();
+var response = await httpClient.GetAsync("http://api.positionstack.com/v1/forward?access_key=a97cb9accc1ba0517bf4b7e8c0a29135&query=74, eschersingel, 3544ml, utrecht");
+var json = await response.Content.ReadAsStringAsync();
+
+// Deserialize the JSON data into a C# object
+var data = System.Text.Json.JsonSerializer.Deserialize<List<Locations>>(json);
+
+// Use the SQLite library to insert the data into a database
+using var connection = new SQLiteConnection("Data Source=data.db");
+connection.Open();
+
+using var transaction = connection.BeginTransaction();
+
+foreach (var Query_ in data)
+{
+    using var command = connection.CreateCommand();
+    command.CommandText = "INSERT INTO Locations ( latitude, longitude) VALUES ( @latitude, @longitude)";
+   
+    command.Parameters.AddWithValue("@latitude", Query_.Straat);
+    command.Parameters.AddWithValue("@value", Query_.HuisNummer);
+    command.ExecuteNonQuery();
+}
+
+transaction.Commit();
+
+*/
